@@ -118,6 +118,11 @@ def read_user_by_id(
     Get a specific user by id.
     """
     user = crud.user.get(db, id=id_user)
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="The user with this id does not exist in the system",
+        )
     if user == current_user:
         return user
     if not crud.user.is_superuser(current_user):
